@@ -4,11 +4,11 @@ from scapy.layers.dns import DNSQR
 from scapy.layers.tls.all import TLS
 from scapy.layers.http import HTTP, Raw
 from scapy.layers.l2 import Ether
-from scapy.layers.tcp import TCP
 from collections import Counter
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle
+from scapy.layers.inet import TCP
 
 
 class PacketAnalyzer:

@@ -2,7 +2,7 @@ from scapy.all import *
 
 
 class PacketCapture:
-    def __init__(self, interface, pcap_file, filters=None):
+    def __init__(self, interface, pcap_file, filters):
         self.interface = interface
         self.pcap_file = pcap_file
         self.filters = filters

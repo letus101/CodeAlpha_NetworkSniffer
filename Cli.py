@@ -14,18 +14,23 @@ class Cli(cmd.Cmd):
 
     def do_capture(self, line):
         """
-                Capture packets from the network.
+        Capture packets from the network.
 
-                Usage: capture <interface> <pcap_file> <count> <filters>
-                Example: capture eth0 capture.pcap 100 "tcp port 80"
-                """
+        Usage: capture <interface> <pcap_file> <count> [<filters>]
+        Example: capture eth0 capture.pcap 100 "tcp port 80"
+        """
         try:
-            interface, pcap_file, count, filters = line.split()
+            parts = line.split()
+            if len(parts) < 3:
+                raise ValueError("Not enough arguments")
+            interface, pcap_file, count = parts[:3]
+            filters = " ".join(parts[3:]) if len(parts) > 3 else ""  # Join all parts after count into filter
             self.packet_capture = PacketCapture(interface, pcap_file, filters)
             self.packet_capture.capturePackets(int(count))
         except Exception as e:
             print("Error: ", e)
-            print("Usage: capture <interface> <pcap_file> <count> <filters>")
+            print("Usage: capture <interface> <pcap_file> <count> [<filters>]")
+
 
     def do_load(self, line):
         """
@@ -37,6 +42,7 @@ class Cli(cmd.Cmd):
         try:
             pcap_file = line
             self.packet_analyzer = PacketAnalyzer(pcap_file)
+            print("Packets loaded successfully")
         except Exception as e:
             print("Error: ", e)
             print("Usage: load <pcap_file>")
