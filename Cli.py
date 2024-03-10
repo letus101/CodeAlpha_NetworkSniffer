@@ -1,6 +1,8 @@
 import cmd
 from PacketCapture import PacketCapture
 from PacketAnalyzer import PacketAnalyzer
+from cmd import Cmd
+import cryptography
 
 
 class Cli(cmd.Cmd):
@@ -16,36 +18,35 @@ class Cli(cmd.Cmd):
         """
         Capture packets from the network.
 
-        Usage: capture <interface> <pcap_file> <count> [<filters>]
-        Example: capture eth0 capture.pcap 100 "tcp port 80"
+        Usage: capture <interface> <pcap_file> <count> 
+        Example: capture eth0 capture.pcap 100
         """
         try:
-            parts = line.split()
-            if len(parts) < 3:
-                raise ValueError("Not enough arguments")
-            interface, pcap_file, count = parts[:3]
-            filters = " ".join(parts[3:]) if len(parts) > 3 else ""  # Join all parts after count into filter
-            self.packet_capture = PacketCapture(interface, pcap_file, filters)
-            self.packet_capture.capturePackets(int(count))
+            interface, pcap_file, count = line.split()
+            count = int(count)
+            self.packet_capture = PacketCapture(interface, pcap_file)
+            self.packet_capture.capturePackets(count)  # Capture packets using capturePackets method
         except Exception as e:
             print("Error: ", e)
-            print("Usage: capture <interface> <pcap_file> <count> [<filters>]")
+            print("Usage: capture <interface> <pcap_file> <count>")
 
 
     def do_load(self, line):
         """
-                Load packets from a pcap file.
+        Load packets from a pcap file.
 
-                Usage: load <pcap_file>
-                Example: load capture.pcap
-                """
+        Usage: load <pcap_file>
+        Example: load capture.pcap
+        """
         try:
             pcap_file = line
             self.packet_analyzer = PacketAnalyzer(pcap_file)
+            self.packet_analyzer.load_packets(pcap_file)  # Load packets using load_packets method
             print("Packets loaded successfully")
         except Exception as e:
             print("Error: ", e)
             print("Usage: load <pcap_file>")
+
 
     def do_packet_count(self, line):
         """
@@ -140,7 +141,7 @@ class Cli(cmd.Cmd):
                 Generate a report of the pcap file.
 
                 Usage: generate_report <report_file>
-                Example: generate_report report.pdf
+                Example: generate_report report.txt
                 """
         try:
             report_file = line
@@ -148,6 +149,20 @@ class Cli(cmd.Cmd):
         except Exception as e:
             print("Error: ", e)
             print("Usage: generate_report <report_file>")
+
+    def do_help(self, line):
+        print("capture <interface> <pcap_file> <count>")
+        print("load <pcap_file>")
+        print("packet_count")
+        print("packet_summary")
+        print("protocol_distribution")
+        print("packet_sizes")
+        print("top_talkers")
+        print("traffic_patterns")
+        print("dns_requests")
+        print("http_requests")
+        print("generate_report <report_file>")
+        print("exit")
 
     def do_exit(self, line):
         return True
