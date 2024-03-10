@@ -1,6 +1,3 @@
-import os
-
-#os.environ['WIRESHARK_MANUF'] = r'C:\Program Files\Wireshark\manuf.txt'  # Use a raw string for the pathfrom scapy.all import *
 from scapy.all import *
 from collections import Counter
 
@@ -232,3 +229,7 @@ class PacketAnalyzer:
         report.write("Packet payload str hex: " + str(self.get_packet_payload_str_hex(0)) + "\n")
         report.write("Packet payload str bytes: " + str(self.get_packet_payload_str_bytes(0)) + "\n")
         report.close()
+
+    def load_packets(self, pcap_file):
+        self.pcap_file = pcap_file
+        self.packets = rdpcap(pcap_file)

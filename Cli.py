@@ -1,7 +1,4 @@
 import cmd
-import os
-
-#os.environ['WIRESHARK_MANUF'] = r'C:\Program Files\Wireshark\manuf.txt'  # Use a raw string for the path
 from PacketCapture import PacketCapture
 from PacketAnalyzer import PacketAnalyzer
 
@@ -105,7 +102,7 @@ class Cli(cmd.Cmd):
             print("Error: ", e)
             print("Usage: detect_malware <pcap_file> <threshold>")
 
-        def do_generate_report(self, line):
+    def do_generate_report(self, line):
             """
             Generate a report from the pcap file.
 
@@ -123,6 +120,21 @@ class Cli(cmd.Cmd):
                 print("Error: ", e)
                 print("Usage: generate_report <report_file>")
 
+    def do_load_packets(self, line):
+        """
+        Load packets from the pcap file.
+
+        Usage: load_packets <pcap_file>
+        Example: load_packets capture.pcap
+        """
+        try:
+            pcap_file = line.strip()
+            self.packet_analyzer = PacketAnalyzer(pcap_file)
+            print(f"Packets loaded successfully from {pcap_file}")
+        except Exception as e:
+            print("Error: ", e)
+            print("Usage: load_packets <pcap_file>")
+
     def do_help(self, arg):
         print("Welcome to the Packet Analyzer CLI. The following commands are available:")
         print("capture <interface> <pcap_file> <count>")
@@ -136,3 +148,6 @@ class Cli(cmd.Cmd):
 
     def do_exit(self, line):
         return True
+
+if __name__ == "__main__":
+    Cli().cmdloop()
