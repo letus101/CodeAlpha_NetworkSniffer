@@ -1,6 +1,6 @@
 import os
 
-os.environ['WIRESHARK_MANUF'] = r'C:\Program Files\Wireshark\manuf.txt'  # Use a raw string for the pathfrom scapy.all import *
+#os.environ['WIRESHARK_MANUF'] = r'C:\Program Files\Wireshark\manuf.txt'  # Use a raw string for the pathfrom scapy.all import *
 from scapy.all import *
 
 class PacketCapture:

@@ -1,7 +1,7 @@
 import cmd
 import os
 
-os.environ['WIRESHARK_MANUF'] = r'C:\Program Files\Wireshark\manuf.txt'  # Use a raw string for the path
+#os.environ['WIRESHARK_MANUF'] = r'C:\Program Files\Wireshark\manuf.txt'  # Use a raw string for the path
 from PacketCapture import PacketCapture
 from PacketAnalyzer import PacketAnalyzer
 
