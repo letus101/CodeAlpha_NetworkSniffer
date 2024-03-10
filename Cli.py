@@ -16,16 +16,16 @@ class Cli(cmd.Cmd):
         """
                 Capture packets from the network.
 
-                Usage: capture <interface> <pcap_file> <count>
-                Example: capture eth0 capture.pcap 1000
+                Usage: capture <interface> <pcap_file> <count> <filters>
+                Example: capture eth0 capture.pcap 100 "tcp port 80"
                 """
         try:
-            interface, pcap_file, count = line.split()
-            self.packet_capture = PacketCapture(interface, pcap_file)
+            interface, pcap_file, count, filters = line.split()
+            self.packet_capture = PacketCapture(interface, pcap_file, filters)
             self.packet_capture.capturePackets(int(count))
         except Exception as e:
             print("Error: ", e)
-            print("Usage: capture <interface> <pcap_file> <count>")
+            print("Usage: capture <interface> <pcap_file> <count> <filters>")
 
     def do_load(self, line):
         """
@@ -40,6 +40,108 @@ class Cli(cmd.Cmd):
         except Exception as e:
             print("Error: ", e)
             print("Usage: load <pcap_file>")
+
+    def do_packet_count(self, line):
+        """
+                Get the number of packets in the pcap file.
+
+                Usage: packet_count
+                """
+        try:
+            print(self.packet_analyzer.get_packet_count())
+        except Exception as e:
+            print("Error: ", e)
+
+    def do_packet_summary(self, line):
+        """
+                Get the summary of the packets in the pcap file.
+
+                Usage: packet_summary
+                """
+        try:
+            print(self.packet_analyzer.get_packet_summary())
+        except Exception as e:
+            print("Error: ", e)
+
+    def do_protocol_distribution(self, line):
+        """
+                Get the distribution of protocols in the pcap file.
+
+                Usage: protocol_distribution
+                """
+        try:
+            print(self.packet_analyzer.protocol_distribution())
+        except Exception as e:
+            print("Error: ", e)
+
+    def do_packet_sizes(self, line):
+        """
+                Get the sizes of packets in the pcap file.
+
+                Usage: packet_sizes
+                """
+        try:
+            print(self.packet_analyzer.packet_sizes())
+        except Exception as e:
+            print("Error: ", e)
+
+    def do_top_talkers(self, line):
+        """
+                Get the top talkers in the pcap file.
+
+                Usage: top_talkers
+                """
+        try:
+            print(self.packet_analyzer.topTalkers())
+        except Exception as e:
+            print("Error: ", e)
+
+    def do_traffic_patterns(self, line):
+        """
+                Get the traffic patterns in the pcap file.
+
+                Usage: traffic_patterns
+                """
+        try:
+            print(self.packet_analyzer.traffic_patterns())
+        except Exception as e:
+            print("Error: ", e)
+
+    def do_dns_requests(self, line):
+        """
+                Get the DNS requests in the pcap file.
+
+                Usage: dns_requests
+                """
+        try:
+            print(self.packet_analyzer.dns_requests())
+        except Exception as e:
+            print("Error: ", e)
+
+    def do_http_requests(self, line):
+        """
+                Get the HTTP requests in the pcap file.
+
+                Usage: http_requests
+                """
+        try:
+            print(self.packet_analyzer.http_requests())
+        except Exception as e:
+            print("Error: ", e)
+
+    def do_generate_report(self, line):
+        """
+                Generate a report of the pcap file.
+
+                Usage: generate_report <report_file>
+                Example: generate_report report.pdf
+                """
+        try:
+            report_file = line
+            self.packet_analyzer.generate_report(report_file)
+        except Exception as e:
+            print("Error: ", e)
+            print("Usage: generate_report <report_file>")
 
     def do_exit(self, line):
         return True
