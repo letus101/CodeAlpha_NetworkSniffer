@@ -5,7 +5,7 @@ class PacketCapture:
         self.interface = interface
         self.pcap_file = pcap_file
 
-    def capturePackets(self, count):
+    def capturePackets(self, count=0):
         try:
             packets = sniff(iface=self.interface, count=count)
             wrpcap(self.pcap_file, packets)
